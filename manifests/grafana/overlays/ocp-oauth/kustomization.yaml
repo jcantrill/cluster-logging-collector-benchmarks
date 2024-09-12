@@ -16,13 +16,16 @@ configMapGenerator:
   - name: grafana-config
     literals:
     - CLUSTER_MONITORING_THANOS_QUERIER_OAUTH_ADDRESS=thanos-querier.openshift-monitoring.svc.cluster.local:9091/
-    - CLUSTER_ROUTES_BASE= 
+    - CLUSTER_ROUTES_BASE=
     - GRAFANA_OAUTH_CLIENT_ID=system:serviceaccount:openshift-monitoring:grafana
     files:
       - grafana/config.ini
   - name: grafana-datasources
     files:
       - grafana/datasources.yaml
-  - name: grafana-dashboards
+  - name: grafana-providers
     files:
       - grafana/providers.yaml
+  - name: grafana-dashboards
+    files:
+      - grafana/collector-dashboard.json

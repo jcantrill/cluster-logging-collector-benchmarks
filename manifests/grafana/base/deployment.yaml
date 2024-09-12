@@ -15,6 +15,9 @@ spec:
         - name: grafana-datasources
           configMap:
             name: grafana-datasources
+        - name: grafana-providers
+          configMap:
+            name: grafana-providers
         - name: grafana-dashboards
           configMap:
             name: grafana-dashboards
@@ -51,4 +54,6 @@ spec:
             - mountPath: /etc/grafana/provisioning/datasources
               name: grafana-datasources
             - mountPath: /etc/grafana/provisioning/dashboards
+              name: grafana-providers
+            - mountPath: /var/lib/grafana/dashboards/logging
               name: grafana-dashboards
