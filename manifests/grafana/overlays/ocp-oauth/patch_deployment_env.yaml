@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  template:
+    spec:
+      containers:
+        - name: grafana
+          env:
+            - name: CLUSTER_ROUTES_BASE
+              valueFrom:
+                configMapKeyRef:
+                  name: grafana-config
+                  key: CLUSTER_ROUTES_BASE
+            - name: GRAFANA_DEPLOYMENT_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: GRAFANA_SERVICEACCOUNT_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.serviceAccountName
+            - name: GATEWAY_SERVICE_CA
+              valueFrom:
+                configMapKeyRef:
+                  key: service-ca.crt
+                  name: openshift-service-ca.crt
+            - name: CLUSTER_MONITORING_THANOS_QUERIER_OAUTH_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: grafana-config
+                  key: CLUSTER_MONITORING_THANOS_QUERIER_OAUTH_ADDRESS

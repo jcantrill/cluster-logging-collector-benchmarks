@@ -1,0 +1,16 @@
+apiVersion: 1
+datasources:
+  - access: proxy
+    editable: true
+    jsonData:
+      tlsAuthWithCACert: true
+      timeInterval: 5s
+      oauthPassThru: true
+      manageAlerts: true
+      alertmanagerUid: 8e7816ff-6815-4a38-95f4-370485165c5e
+    secureJsonData:
+      tlsCACert: ${GATEWAY_SERVICE_CA}
+    name: Prometheus (In Cluster)
+    uid: 73a57e8b-7679-4a18-915c-292f143448c7
+    type: prometheus
+    url: https://${CLUSTER_MONITORING_THANOS_QUERIER_OAUTH_ADDRESS}
