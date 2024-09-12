@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-receiver
+  labels:
+    app.kubernetes.io/name: logging-benchmarking
+    app.kubernetes.io/component: receiver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: logging-benchmarking
+      app.kubernetes.io/component: receiver
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: logging-benchmarking
+        app.kubernetes.io/component: receiver
+    spec:
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: http-receiver
+        name: config
+      containers:
+      - name: receiver
+        image: quay.io/openshift-logging/vector:5.8.0
+        command:
+        - /usr/bin/vector
+        - --config-toml=/etc/vector/vector.toml
+        ports:
+        - containerPort: 8090
+        volumeMounts:
+        - mountPath: /etc/vector
+          name: config
