@@ -1,0 +1,30 @@
+apiVersion: "observability.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging 
+spec:
+  collector:
+    nodeSelector:
+      node-role.kubernetes.io/worker: ""
+      log-workload: benchmark
+  serviceAccount:
+    name: logcollector
+  outputs:
+  - name: receiver
+  inputs:
+  - name: log-generators
+    type: application
+    application:
+      includes:
+      - namespace: openshift-logging
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: logging-benchmarking
+          app.kubernetes.io/component: loader
+  pipelines:
+  - name: benchmark
+    inputRefs:
+    - log-generators
+    outputRefs:
+    - receiver
