@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otlp-receiver
+  labels:
+    app.kubernetes.io/name: logging-benchmarking
+    app.kubernetes.io/component: receiver
+    app.kubernetes.io/instance: otlp
+data:
+  config.yaml: |
+    exporters:
+      debug:
+        verbosity: detailed
+      file:
+        path: /tmp/app-logs
+        format: json
+        flush_interval: 1s
+    receivers:
+      otlp:
+        protocols:
+          http:
+            endpoint: "localhost:4318"
+    service:
+      pipelines:
+        logs:
+          receivers: [otlp]
+          exporters: [file,debug]

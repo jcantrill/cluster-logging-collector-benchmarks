@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: logging-benchmarking
     app.kubernetes.io/component: receiver
+    app.kubernetes.io/instance: http
 data:
   vector.toml: |
     [sources.my_source]

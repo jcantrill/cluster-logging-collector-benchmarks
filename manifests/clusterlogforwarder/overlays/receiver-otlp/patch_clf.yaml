@@ -1,0 +1,19 @@
+apiVersion: "observability.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging
+  annotations:
+    observability.openshift.io/tech-preview-otlp-output: enabled
+spec:
+  collector:
+    resources:
+      limits:
+        memory: 6G
+  serviceAccount:
+    name: logcollector
+  outputs:
+  - name: receiver
+    type: otlp
+    otlp:
+      url: http://otlp-receiver.openshift-logging.svc:8090/v1/logs

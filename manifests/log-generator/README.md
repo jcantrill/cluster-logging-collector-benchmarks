@@ -1,6 +1,6 @@
-= log-generator
+# log-generator
 
-== Prerequisites
+## Prerequisites
 
 Label on worker node for testing:
 
