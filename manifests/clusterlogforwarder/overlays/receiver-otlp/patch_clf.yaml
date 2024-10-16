@@ -6,14 +6,10 @@ metadata:
   annotations:
     observability.openshift.io/tech-preview-otlp-output: enabled
 spec:
-  collector:
-    resources:
-      limits:
-        memory: 6G
   serviceAccount:
     name: logcollector
   outputs:
   - name: receiver
     type: otlp
     otlp:
-      url: http://otlp-receiver.openshift-logging.svc:8090/v1/logs
+      url: http://otlp-receiver.openshift-logging.svc:4318/v1/logs

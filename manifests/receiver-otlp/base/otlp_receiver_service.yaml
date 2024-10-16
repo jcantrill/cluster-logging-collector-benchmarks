@@ -8,7 +8,7 @@ metadata:
   name: otlp-receiver
 spec:
   ports:
-  - port: 8090
+  - port: 4318
     protocol: TCP
     targetPort: 4318
   selector:

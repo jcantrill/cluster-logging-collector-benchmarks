@@ -1,41 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "73a57e8b-7679-4a18-915c-292f143448c7",
-      "label": "Prometheus (In Cluster)",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.5.7"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -55,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -429,32 +391,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "transform/pipeline_benchmark_viaq_0"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 16,
@@ -473,9 +410,7 @@
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Max",
-          "sortDesc": true
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -490,7 +425,7 @@
           },
           "editorMode": "code",
           "expr": "vector_utilization",
-          "legendFormat": "{{component_kind}}/{{component_id}}",
+          "legendFormat": "{{component_kind}}/{{component_type}}/{{component_id}}",
           "range": true,
           "refId": "A"
         }
@@ -562,7 +497,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "collector-5gfp7"
+                  "collector-dcrjl"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -770,6 +705,98 @@
               },
               {
                 "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 21
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "vector_buffer_events{component_type!=\"prometheus_exporter\"}",
+          "legendFormat": "{{component_type}}/{{component_id}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Buffer Size(events)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
                 "value": 1000
               }
             ]
@@ -805,8 +832,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 6,
+        "x": 18,
         "y": 21
       },
       "id": 8,
@@ -935,11 +962,11 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "irate(vector_component_sent_bytes_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m])",
+          "expr": "sum(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
-          "legendFormat": "Sent",
+          "legendFormat": "Collected",
           "range": true,
-          "refId": "A"
+          "refId": "B"
         },
         {
           "datasource": {
@@ -947,11 +974,12 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum(irate(vector_component_sent_bytes_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
-          "legendFormat": "Collected",
+          "interval": "",
+          "legendFormat": "Sent",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
       "title": "Throughput Rate (Bytes)",
@@ -1041,11 +1069,11 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "irate(vector_component_sent_events_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m])",
+          "expr": "sum(irate(vector_component_received_events_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
-          "legendFormat": "Sent",
+          "legendFormat": "Collected",
           "range": true,
-          "refId": "A"
+          "refId": "B"
         },
         {
           "datasource": {
@@ -1053,11 +1081,11 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_received_events_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum(irate(vector_component_sent_events_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
-          "legendFormat": "Collected",
+          "legendFormat": "Sent",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
       "title": "Throughput Rate (events)",
@@ -1126,11 +1154,11 @@
         "x": 0,
         "y": 38
       },
-      "id": 15,
+      "id": 17,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
@@ -1139,6 +1167,7 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "9.5.7",
       "targets": [
         {
           "datasource": {
@@ -1146,13 +1175,37 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "vector_buffer_events{component_type!=\"prometheus_exporter\"}",
-          "legendFormat": "{{component_type}}/{{component_id}}",
+          "expr": "sum by (component_id, error_kind)(vector_http_client_errors_total)",
+          "legendFormat": "{{component_id}} error: {{error_kind}}",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "vector_http_client_requests_sent_total",
+          "hide": false,
+          "legendFormat": "{{component_id}} requests",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "vector_http_client_responses_total",
+          "hide": false,
+          "legendFormat": "{{component_id}} responses",
+          "range": true,
+          "refId": "C"
         }
       ],
-      "title": "Buffer Size(events)",
+      "title": "HTTP Requests / Response",
       "type": "timeseries"
     },
     {
@@ -1248,7 +1301,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "refresh": false,
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -1256,8 +1309,8 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2024-10-16T19:30:21.190Z",
+    "to": "2024-10-16T19:40:21.190Z"
   },
   "timepicker": {},
   "timezone": "",
