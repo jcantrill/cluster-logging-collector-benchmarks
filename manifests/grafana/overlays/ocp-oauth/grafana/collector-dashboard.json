@@ -49,10 +49,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -89,7 +85,8 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(kube_pod_labels{label_app_kubernetes_io_component=\"loader\",label_app_kubernetes_io_name=\"logging-benchmarking\"})",
+          "expr": "count(kube_pod_labels{label_app_kubernetes_io_component=\"loader\",label_app_kubernetes_io_name=\"logging-benchmarking\"})",
+          "hide": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -410,7 +407,9 @@
           ],
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
@@ -425,7 +424,7 @@
           },
           "editorMode": "code",
           "expr": "vector_utilization",
-          "legendFormat": "{{component_kind}}/{{component_type}}/{{component_id}}",
+          "legendFormat": "{{pod}}/{{component_kind}}/{{component_type}}/{{component_id}}",
           "range": true,
           "refId": "A"
         }
@@ -489,32 +488,7 @@
           },
           "unit": "decbytes"
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "collector-dcrjl"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -739,7 +713,7 @@
           },
           "editorMode": "code",
           "expr": "vector_buffer_events{component_type!=\"prometheus_exporter\"}",
-          "legendFormat": "{{component_type}}/{{component_id}}",
+          "legendFormat": "{{pod}}/{{component_type}}/{{component_id}}",
           "range": true,
           "refId": "A"
         }
@@ -962,9 +936,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum by(pod,component_id)(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\",component_type!=\"internal_metrics\"}[5m]))",
           "hide": false,
-          "legendFormat": "Collected",
+          "legendFormat": "Collected({{pod}}/{{component_id}})",
           "range": true,
           "refId": "B"
         },
@@ -974,10 +948,10 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_sent_bytes_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum by(pod,component_id)(irate(vector_component_sent_bytes_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
           "interval": "",
-          "legendFormat": "Sent",
+          "legendFormat": "Sent({{pod}}/{{component_id}})",
           "range": true,
           "refId": "A"
         }
@@ -1069,9 +1043,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_received_events_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum by (pod,component_id)(irate(vector_component_received_events_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\", component_type!=\"internal_metrics\"}[5m]))",
           "hide": false,
-          "legendFormat": "Collected",
+          "legendFormat": "Collected({{pod}}/{{component_id}})",
           "range": true,
           "refId": "B"
         },
@@ -1081,9 +1055,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum(irate(vector_component_sent_events_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "expr": "sum by (pod,component_id)(irate(vector_component_sent_events_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
           "hide": false,
-          "legendFormat": "Sent",
+          "legendFormat": "Sent({{pod}}/{{component_id}})",
           "range": true,
           "refId": "A"
         }
@@ -1146,7 +1120,35 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "collector-5kndc/output_receiver responses",
+                  "collector-9pkcb/output_receiver responses",
+                  "collector-9pkcb/output_receiver requests",
+                  "collector-5kndc/output_receiver requests"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1175,8 +1177,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id, error_kind)(vector_http_client_errors_total)",
-          "legendFormat": "{{component_id}} error: {{error_kind}}",
+          "expr": "sum by (pod, component_id, error_kind)(vector_http_client_errors_total)",
+          "hide": false,
+          "legendFormat": "{{pod}}/{{component_id}} error: {{error_kind}}",
           "range": true,
           "refId": "A"
         },
@@ -1186,9 +1189,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "vector_http_client_requests_sent_total",
+          "expr": "sum by (pod, component_id, error_kind)(vector_http_client_requests_sent_total)",
           "hide": false,
-          "legendFormat": "{{component_id}} requests",
+          "legendFormat": "{{pod}}/{{component_id}} requests",
           "range": true,
           "refId": "B"
         },
@@ -1198,9 +1201,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "vector_http_client_responses_total",
+          "expr": "sum by (pod, component_id, error_kind)(vector_http_client_responses_total)",
           "hide": false,
-          "legendFormat": "{{component_id}} responses",
+          "legendFormat": "{{pod}}/{{component_id}} responses",
           "range": true,
           "refId": "C"
         }
@@ -1291,17 +1294,18 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (irate(vector_component_discarded_events_total[2m]))",
-          "legendFormat": "__auto",
+          "expr": "sum by (pod, component_id)(irate(vector_buffer_discarded_events_total{component_kind=\"sink\"}[2m]))",
+          "hide": false,
+          "legendFormat": "{{pod}}/{{component_id}}",
           "range": true,
-          "refId": "A"
+          "refId": "B"
         }
       ],
       "title": "Discard Event Rate",
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -1309,8 +1313,8 @@
     "list": []
   },
   "time": {
-    "from": "2024-10-16T19:30:21.190Z",
-    "to": "2024-10-16T19:40:21.190Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
