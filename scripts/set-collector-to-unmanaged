@@ -1,0 +1,4 @@
+#!/bin/bash
+name="${1:-collector}"
+
+oc patch clusterlogforwarder/$name --type="json" -p='[{"op": "replace", "path": "/spec/managementState", "value":"Unmanaged"}]'

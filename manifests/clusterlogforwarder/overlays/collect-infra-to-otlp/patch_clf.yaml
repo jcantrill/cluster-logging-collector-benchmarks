@@ -6,8 +6,18 @@ metadata:
   annotations:
     observability.openshift.io/tech-preview-otlp-output: enabled
 spec:
+  collector:
+    nodeSelector:
+      node-role.kubernetes.io/master: ""
+  inputs: []
   outputs:
   - name: receiver
     type: otlp
     otlp:
       url: http://otlp-receiver.openshift-logging.svc:4318/v1/logs
+  pipelines:
+  - name: benchmark
+    inputRefs:
+    - infrastructure
+    outputRefs:
+    - receiver

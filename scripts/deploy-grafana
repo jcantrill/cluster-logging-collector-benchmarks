@@ -1,0 +1,8 @@
+#!/bin/bash
+
+current_dir=$(dirname "${BASH_SOURCE[0]}" )
+base=$(oc -n openshift-console get route/console -o jsonpath={.spec.host} | sed -n '/console-openshift-console.apps./s/console-openshift-console.apps.//p')
+file=$current_dir/../manifests/grafana/overlays/ocp-oauth/kustomization.yaml
+sed -i "s/CLUSTER_ROUTES_BASE=.*/CLUSTER_ROUTES_BASE=${base}/g" "$file"
+
+oc apply -k $current_dir/../manifests/grafana/overlays/ocp-oauth

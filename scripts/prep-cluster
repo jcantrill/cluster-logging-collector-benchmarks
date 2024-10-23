@@ -1,0 +1,8 @@
+#!/bin/bash
+
+node_type="${1:-worker}"
+current_dir=$(dirname "${BASH_SOURCE[0]}" )
+
+node=$(oc get nodes -lnode-role.kubernetes.io/$node_type -o name | sort | head -n 1)
+
+oc label $node log-workload=benchmark

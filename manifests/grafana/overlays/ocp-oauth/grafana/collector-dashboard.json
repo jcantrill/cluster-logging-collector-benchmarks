@@ -227,12 +227,351 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Sent http",
+                  "Collected kubernetes_logs",
+                  "Collected journald",
+                  "Sent(collector-vcdf5/output_receiver)",
+                  "Sent(collector-m8xlm/output_receiver)",
+                  "Sent(collector-8fn97/output_receiver)",
+                  "Collected(collector-8fn97/journald)",
+                  "Collected(collector-8fn97/kubernetes_logs)",
+                  "Collected(collector-vcdf5/kubernetes_logs)",
+                  "Collected(collector-vcdf5/journald)"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by(component_type)(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\",component_type!=\"internal_metrics\"}[5m]))",
+          "hide": false,
+          "legendFormat": "Collected {{component_type}}",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by(component_type)(irate(vector_component_sent_bytes_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "hide": false,
+          "legendFormat": "Sent {{component_type}}",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Total Throughput Rate (Bytes)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by (component_type)(irate(vector_component_received_events_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\", component_type!=\"internal_metrics\"}[5m]))",
+          "hide": false,
+          "legendFormat": "Collected {{component_type}}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by (component_type)(irate(vector_component_sent_events_total{component_kind=\"sink\", component_type!=\"prometheus_exporter\",app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\"}[5m]))",
+          "hide": false,
+          "legendFormat": "Sent {{component_type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Throughput Rate (events)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by (namespace,pod,container)(kube_pod_container_status_restarts_total{namespace=\"openshift-logging\",container=\"collector\"})",
+          "legendFormat": "{{pod}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Restarts",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 7
       },
       "id": 1,
       "panels": [],
@@ -300,7 +639,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 5
+        "y": 8
       },
       "id": 3,
       "options": {
@@ -394,7 +733,7 @@
         "h": 16,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 8
       },
       "id": 16,
       "options": {
@@ -494,7 +833,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 13
+        "y": 16
       },
       "id": 4,
       "options": {
@@ -586,7 +925,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 5,
       "options": {
@@ -690,7 +1029,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 21
+        "y": 24
       },
       "id": 15,
       "options": {
@@ -808,7 +1147,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 21
+        "y": 24
       },
       "id": 8,
       "options": {
@@ -845,7 +1184,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 32
       },
       "id": 11,
       "panels": [],
@@ -908,13 +1247,47 @@
           },
           "unit": "decbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Sent http",
+                  "Collected kubernetes_logs",
+                  "Collected journald",
+                  "Sent(collector-vcdf5/output_receiver)",
+                  "Sent(collector-m8xlm/output_receiver)",
+                  "Sent(collector-8fn97/output_receiver)",
+                  "Collected(collector-8fn97/journald)",
+                  "Collected(collector-8fn97/kubernetes_logs)",
+                  "Collected(collector-vcdf5/kubernetes_logs)",
+                  "Collected(collector-vcdf5/journald)"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 33
       },
       "id": 12,
       "options": {
@@ -936,9 +1309,9 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "sum by(pod,component_id)(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\",component_type!=\"internal_metrics\"}[5m]))",
+          "expr": "sum by(pod,component_type,component_id)(irate(vector_component_received_event_bytes_total{component_kind=\"source\", app_kubernetes_io_component=\"collector\",app_kubernetes_io_part_of=\"cluster-logging\",component_type!=\"internal_metrics\"}[5m]))",
           "hide": false,
-          "legendFormat": "Collected({{pod}}/{{component_id}})",
+          "legendFormat": "Collected({{pod}}/{{component_type}})",
           "range": true,
           "refId": "B"
         },
@@ -1021,9 +1394,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 30
+        "y": 33
       },
-      "id": 14,
+      "id": 20,
       "options": {
         "legend": {
           "calcs": [],
@@ -1128,10 +1501,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "collector-5kndc/output_receiver responses",
-                  "collector-9pkcb/output_receiver responses",
-                  "collector-9pkcb/output_receiver requests",
-                  "collector-5kndc/output_receiver requests"
+                  "collector-k4pch/output_receiver error: error trying to connect: dns error: failed to lookup address information: Name or service not known"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -1154,7 +1524,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 41
       },
       "id": 17,
       "options": {
@@ -1272,7 +1642,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 41
       },
       "id": 13,
       "options": {
@@ -1296,9 +1666,21 @@
           "editorMode": "code",
           "expr": "sum by (pod, component_id)(irate(vector_buffer_discarded_events_total{component_kind=\"sink\"}[2m]))",
           "hide": false,
-          "legendFormat": "{{pod}}/{{component_id}}",
+          "legendFormat": "Buffer: {{pod}}/{{component_id}}",
           "range": true,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "sum by (pod, component_id)(irate(vector_component_discarded_events_total[2m]))",
+          "hide": false,
+          "legendFormat": "Component: {{pod}}/{{component_kind}}/{{component_id}}",
+          "range": true,
+          "refId": "A"
         }
       ],
       "title": "Discard Event Rate",

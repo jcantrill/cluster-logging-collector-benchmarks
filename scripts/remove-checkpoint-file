@@ -1,0 +1,7 @@
+#!/bin/bash
+
+current_dir=$(dirname "${BASH_SOURCE[0]}" )
+
+node=$(oc get nodes -llog-workload=benchmark -o name | sort | head -n 1)
+
+oc debug $node -t --as-root -- chroot /host rm -rf /var/lib/vector/
