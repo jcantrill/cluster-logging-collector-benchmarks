@@ -1,0 +1,37 @@
+apiVersion: "observability.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging
+  annotations:
+    observability.openshift.io/tech-preview-otlp-output: enabled
+spec:
+  outputs:
+  - name: receiver-app
+    type: otlp
+    otlp:
+      url: http://otlp-receiver.openshift-logging.svc:4318/v1/logs
+  - name: receiver-infra
+    type: otlp
+    otlp:
+      url: http://otlp-receiver.openshift-logging.svc:4318/v1/logs
+  - name: receiver-audit
+    type: otlp
+    otlp:
+      url: http://otlp-receiver.openshift-logging.svc:4318/v1/logs
+  pipelines:
+  - name: app
+    inputRefs:
+    - application
+    outputRefs:
+    - receiver-app
+  - name: infra
+    inputRefs:
+    - infrastructure
+    outputRefs:
+    - receiver-infra
+  - name: audit
+    inputRefs:
+    - audit
+    outputRefs:
+    - receiver-audit

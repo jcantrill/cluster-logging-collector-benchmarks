@@ -25,7 +25,7 @@ spec:
         - name: LOGS_PER_SECOND
           value: "1"
         - name: PAYLOAD_SIZE
-          value: "100"
+          value: "1024"
         image: quay.io/openshift-logging/cluster-logging-load-client:latest
         imagePullPolicy: Always
         args:

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: collector
+  namespace: openshift-logging
+spec:
+ template:
+     spec:
+      containers:
+      - name: collector
+        volumeMounts:
+        - mountPath: /var/log/kube-apiserver
+          name: varlogkubeapiserver
+          readOnly: false
+      - name: auditlogger
+        env:
+        - name: LOGS_PER_SECOND
+          value: "1"
+        image: quay.io/jcantril/cluster-logging-load-client:dev
+        imagePullPolicy: Always
+        args:
+        - --logs-per-second=$(LOGS_PER_SECOND)
+        - --log-type=audit
+        - --log-format=raw
+        - --file=/var/log/kube-apiserver/audit.log
+        - --destination=file
+        volumeMounts:
+        - mountPath: /var/log/kube-apiserver
+          name: varlogkubeapiserver
+          readOnly: false
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: varlogkubeapiserver

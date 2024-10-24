@@ -150,7 +150,7 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "avg(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate + on(namespace,pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0)",
+          "expr": "avg(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate + on(namespace)group_left(pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -217,7 +217,7 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "avg(node_namespace_pod_container:container_memory_rss + on(namespace,pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0)",
+          "expr": "avg(node_namespace_pod_container:container_memory_rss + on(namespace)group_left(pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -661,7 +661,7 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate + on(namespace,pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0",
+          "expr": "node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate + on(namespace)group_left(pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0",
           "hide": false,
           "legendFormat": "{{pod}}",
           "range": true,
@@ -855,7 +855,7 @@
             "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
           },
           "editorMode": "code",
-          "expr": "node_namespace_pod_container:container_memory_rss + on(namespace,pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0",
+          "expr": "node_namespace_pod_container:container_memory_rss + on(namespace)group_left(pod)kube_pod_labels{label_app_kubernetes_io_component=\"collector\",label_app_kubernetes_io_managed_by=\"cluster-logging-operator\"}*0",
           "legendFormat": "{{pod}}",
           "range": true,
           "refId": "A"
