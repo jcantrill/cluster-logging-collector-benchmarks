@@ -2,6 +2,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../base
-patchesStrategicMerge:
-- patch_lps.yaml
-- patch_replicas.yaml
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: logger
+      spec:
+        replicas: 10
+        template:
+          spec:
+            containers:
+            - name: logger
+              env:
+              - name: LOGS_PER_SECOND
+                value: "250"
