@@ -16,7 +16,7 @@ spec:
         env:
         - name: LOGS_PER_SECOND
           value: "1"
-        image: quay.io/jcantril/cluster-logging-load-client:dev
+        image: quay.io/openshift-logging/cluster-logging-load-client:latest
         imagePullPolicy: Always
         args:
         - --logs-per-second=$(LOGS_PER_SECOND)
