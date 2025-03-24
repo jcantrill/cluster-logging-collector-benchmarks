@@ -168,7 +168,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed"
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -177,10 +177,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -224,6 +220,71 @@
         }
       ],
       "title": "Avg Mem",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+      },
+      "description": "Lines per second of each log generator",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 6,
+        "y": 1
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "73a57e8b-7679-4a18-915c-292f143448c7"
+          },
+          "editorMode": "code",
+          "expr": "avg(irate(log_generator_messages_produced_total{app_kubernetes_io_component=\"loader\"}[5m]))",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Lines / Sec",
       "type": "stat"
     },
     {
@@ -628,7 +689,8 @@
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "none"
             },
             "overrides": [
               {
@@ -638,7 +700,7 @@
                   "options": {
                     "mode": "exclude",
                     "names": [
-                      "collector-4s2hn"
+                      "collector-b5tf9"
                     ],
                     "prefix": "All except:",
                     "readOnly": true
@@ -747,7 +809,8 @@
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "percentunit"
             },
             "overrides": []
           },
@@ -768,9 +831,7 @@
               ],
               "displayMode": "table",
               "placement": "bottom",
-              "showLegend": true,
-              "sortBy": "Mean",
-              "sortDesc": true
+              "showLegend": true
             },
             "tooltip": {
               "mode": "single",
@@ -1835,7 +1896,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-2m",
     "to": "now"
   },
   "timepicker": {},
