@@ -32,23 +32,23 @@ The following are metrics of interest because of how they impact the performance
 The application load is created by deploying a set of log generators that are isolated to the same node as the collector.
 The [manifests](manifests/log-generator) directory includes deployments which allow deploying generators based on the following:
 
-`<tot_loaders>_loaders_<cumulative_rate>`
+`<cumulative_rate>_lps/<tot_loaders>_loaders`
 
 * `tot_loaders`: is the total number of loaders deployed (e.g. 0100 is 100)
-* `cumulative_rate`: is the sum total rate of all loaders deployed (e.g. 5000_lps)
+* `cumulative_rate`: is the sum total rate (lines per sec) of all loaders deployed (e.g. 5000)
 
-For example, [0100_loaders_5000_lps](manifests/log-generator/overlays/0100_loaders_5000_lps) will deploy 100 log generators each producing 50 lines per sec.
+For example, [5000_lps/0100_loaders](manifests/log-generator/overlays/5000_lps/0100_loaders) will deploy 100 log generators each producing 50 lines per sec.
 
 Deploy the desired log generators by:
 
 ```
-oc -k apply manifests/log-generator/overlays/0100_loaders_5000_lps
+oc -k apply manifests/log-generator/overlays/5000_lps/0100_loaders
 ```
 
 ## Deploy a Receiver
 
 ```
-oc -k apply manifests/receiver-otlp/base
+oc -k apply manifests/receiver-otlp
 ```
 
 ## Deploy the Collector
