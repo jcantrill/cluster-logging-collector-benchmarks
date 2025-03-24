@@ -7,3 +7,4 @@ resources:
 - serviceaccount.yaml
 - clusterrolebinding.yaml
 - clusterlogforwarder.yaml
+- log-file-metric-exporter.yaml

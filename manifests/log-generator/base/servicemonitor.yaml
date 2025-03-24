@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: logger
+spec:
+  endpoints:
+  - port: metrics
+  jobLabel: monitor-logger
+  podTargetLabels:
+  - app.kubernetes.io/name
+  - app.kubernetes.io/component
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: logging-benchmarking
+      app.kubernetes.io/component: loader

@@ -30,3 +30,7 @@ spec:
         - --logs-per-second=$(LOGS_PER_SECOND)
         - --synthetic-payload-size=$(PAYLOAD_SIZE) 
         - --log-type=synthetic
+        ports:
+        - containerPort: 8081
+          name: metrics
+          protocol: TCP

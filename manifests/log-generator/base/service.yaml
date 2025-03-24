@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: logging-benchmarking
+    app.kubernetes.io/component: loader
+  name: logger
+spec:
+  ports:
+  - name: metrics
+    port: 8081
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/name: logging-benchmarking
+    app.kubernetes.io/component: loader
