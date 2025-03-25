@@ -24,6 +24,13 @@ spec:
         - name: grafana
           emptyDir: {}
       containers:
+        - name: pdfexporter
+          image: quay.io/jcantril/exportgrafanadashboardtopdf:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
+              name: http-export
+              protocol: TCP
         - name: grafana
           image: docker.io/grafana/grafana:9.5.7
           imagePullPolicy: IfNotPresent

@@ -19,23 +19,11 @@ The following are metrics of interest because of how they impact the performance
 * Number of log events discarded
 * Number of log events missed
 
-## Repository Structure
-```
-  |- manifests                       # kustomize manifests for deploying specific aspects of the infrastructure
-  |
-  |- clusterlogforwarder             # manifests for deploying ClusterLogForwarders
-  |  |- grafana                      # manifests for deploying grafana
-  |  |- log-generator                # manifests for deploying various configurations of log generators
-  |  |- receivers                    # manifests for deploying various log receivers
-  |
-  |- scripts                         # utility scripts to interact with the structure
-```
-
 # Running Tests
 
 ## Preparation
+1. [Prep](./scripts/prep-cluster) the cluster
 1. Deploy an Openshift cluster
-1. [Prep](./scripts/prep-cluster) the cluster to isolate the collectors to a single worker node
 1. Deploy the cluster-logging-operator
 1. [Deploy](./scripts/deploy-grafana) an instance of grafana and the collection dashboard
 
@@ -60,22 +48,13 @@ oc -k apply manifests/log-generator/overlays/5000_lps/0100_loaders
 ## Deploy a Receiver
 
 ```
-oc -k apply manifests/receivers/otlp
+oc -k apply manifests/receiver-otlp
 ```
 
 ## Deploy the Collector
 
-Deploy the collector which matches the receiver.
+Deploy the collector which matches the receiver
 
 ```
 oc -k apply manifests/clusterlogforwarder/overlays/receiver-otlp
-```
-
-## Troubleshooting
-
-### Everything is deployed but there are several dashboard panels which are blank
-Cluster metrics only scrapes namespaces which is labled correctly.  Set the label with:
-
-```
-oc label ns/openshift-logging openshift.io/cluster-monitoring="true"
 ```
