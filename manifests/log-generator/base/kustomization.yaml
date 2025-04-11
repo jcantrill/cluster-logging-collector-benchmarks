@@ -12,16 +12,16 @@ resources:
 - servicemonitor.yaml
 - service.yaml
 
-# patches:
-# - patch: |-
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     metadata:
-#       name: logger
-#     spec:
-#       replicas: 1
-#       template:
-#         spec:
-#           containers:
-#           - name: logger
-#             image: quay.io/jcantril/cluster-logging-load-client:with_metrics
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: logger
+    spec:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: logger
+            image: quay.io/jcantril/cluster-logging-load-client:with_metrics
