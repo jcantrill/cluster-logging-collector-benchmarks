@@ -1,0 +1,41 @@
+#!/bin/bash
+
+RESOURCES=$(cat << EOF  
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: openshift-operators-redhat
+    openshift.io/cluster-monitoring: "true"
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: privileged
+    security.openshift.io/scc.podSecurityLabelSync: "false"
+  name: openshift-operators-redhat
+spec:
+  finalizers:
+  - kubernetes
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: loki-operator
+  namespace: openshift-operators-redhat
+spec:
+  upgradeStrategy: Default
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: loki-operator
+  namespace: openshift-operators-redhat
+spec:
+  channel: stable-6.3
+  name: loki-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
+)
+
+echo "${RESOURCES}" | oc apply -f -

@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+- clusterrolebindings.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/pipelines/0/outputRefs/0
+      value: receiver-lokistack-otlp
+  target:
+    kind: ClusterLogForwarder
+- patch: |-
+    apiVersion: "observability.openshift.io/v1"
+    kind: ClusterLogForwarder
+    metadata:
+      name: collector
+      namespace: openshift-logging
+      annotations:
+        observability.openshift.io/tech-preview-otlp-output: enabled
+    spec:
+      outputs:
+      - name: receiver-lokistack-otlp
+        type: lokiStack
+        lokiStack:
+          authentication:
+            token:
+              from: serviceAccount
+          dataModel: Otel
+          target:
+            namespace: openshift-logging
+            name: lokistack-dev
+        tls:
+          ca:
+            key: service-ca.crt
+            configMapName: openshift-service-ca.crt
