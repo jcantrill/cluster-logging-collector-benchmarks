@@ -5,6 +5,9 @@ metadata:
   namespace: openshift-logging 
 spec:
   collector:
+    resources:
+      limits:
+        memory: 4Gi
     nodeSelector:
       node-role.kubernetes.io/worker: ""
       log-workload: benchmark

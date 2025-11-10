@@ -23,6 +23,10 @@ setup-for-lokistack: create-s3-bucket setup-aws-secret
 deploy-loki-operator:
 	./scripts/deploy-loki-operator
 
+.PHONY: deploy-lokistack
+deploy-lokistack:
+	oc apply -k manifests/receivers/loki_stack
+
 .PHONY: setup-aws-secret
 setup-aws-secret:
 	oc -n openshift-logging create secret generic $(LOKI_SECRET_NAME) \
