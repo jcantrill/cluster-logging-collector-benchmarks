@@ -29,7 +29,7 @@ data:
     [sinks.container]
     inputs = ["route_logs.container"]
     type = "file"
-    path = "/tmp/container/{{kubernetes.namespace_name}}_{{kubernetes.pod_name}}_{{kubernetes.container_name}}.json"
+    path = "/opt/logs/container/{{kubernetes.namespace_name}}_{{kubernetes.pod_name}}_{{kubernetes.container_name}}.json"
 
     [sinks.container.encoding]
     codec = "json"
@@ -37,14 +37,14 @@ data:
     [sinks.out_journal]
     inputs = ["route_logs.journal"]
     type = "file"
-    path = "/tmp/journal/journal.json"
+    path = "/opt/logs/journal/journal.json"
 
     [sinks.out_journal.encoding]
     codec = "json"
     [sinks.out_audit]
     inputs = ["route_logs.audit"]
     type = "file"
-    path = "/tmp/audit/audit.json"
+    path = "/opt/logs/audit/audit.json"
 
     [sinks.out_audit.encoding]
     codec = "json"
