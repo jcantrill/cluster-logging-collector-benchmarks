@@ -19,12 +19,16 @@ spec:
         app.kubernetes.io/name: logging-benchmarking
         app.kubernetes.io/component: receiver
         app.kubernetes.io/instance: http
+        include_storage: "true"
     spec:
       volumes:
       - configMap:
           defaultMode: 420
           name: http-receiver
         name: config
+      - name: storage
+        persistentVolumeClaim:
+          claimName: http-receiver
       containers:
       - name: receiver
         image: quay.io/openshift-logging/vector:5.8.0
@@ -37,3 +41,5 @@ spec:
         volumeMounts:
         - mountPath: /etc/vector
           name: config
+        - name: storage
+          mountPath: /opt/logs
