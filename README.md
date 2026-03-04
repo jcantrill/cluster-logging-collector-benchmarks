@@ -22,10 +22,10 @@ The following are metrics of interest because of how they impact the performance
 # Running Tests
 
 ## Preparation
-1. [Prep](./scripts/prep-cluster) the cluster
 1. Deploy an Openshift cluster
-1. Deploy the cluster-logging-operator
-1. [Deploy](./scripts/deploy-grafana) an instance of grafana and the collection dashboard
+2. [Prep](./scripts/prep-cluster) the cluster
+3. Deploy the cluster-logging-operator
+4. [Deploy](./scripts/deploy-grafana) an instance of grafana and the collection dashboard
 
 ## Deploy an Application Load
 
