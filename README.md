@@ -42,13 +42,13 @@ For example, [5000_lps/0100_loaders](manifests/log-generator/overlays/5000_lps/0
 Deploy the desired log generators by:
 
 ```
-oc -k apply manifests/log-generator/overlays/5000_lps/0100_loaders
+oc apply -k manifests/log-generator/overlays/5000_lps/0100_loaders
 ```
 
 ## Deploy a Receiver
 
 ```
-oc -k apply manifests/receiver-otlp
+oc apply -k manifests/receiver-otlp
 ```
 
 ## Deploy the Collector
